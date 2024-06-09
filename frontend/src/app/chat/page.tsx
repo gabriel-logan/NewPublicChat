@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
 import { IoSendSharp } from "react-icons/io5";
 import io, { Socket } from "socket.io-client";
@@ -36,8 +36,10 @@ export default function ChatPage() {
 			| React.KeyboardEvent<HTMLTextAreaElement>
 			| React.MouseEvent<HTMLButtonElement, MouseEvent>,
 	) => {
+		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
 		if (event instanceof KeyboardEvent) {
-			if (event.key === "Enter" && !event.shiftKey) {
+			if (event.key === "Enter" && !event.shiftKey && !isMobile) {
 				event.preventDefault();
 			} else {
 				return;
@@ -210,7 +212,14 @@ export default function ChatPage() {
 							} p-2 max-w-xs min-w-24 font-medium`}
 						>
 							{msg.name}:{" "}
-							<span style={{ wordWrap: "break-word" }}>{msg.text}</span>
+							<span style={{ wordWrap: "break-word" }}>
+								{msg.text.split("\n").map((line, index) => (
+									<Fragment key={index}>
+										{line}
+										<br />
+									</Fragment>
+								))}
+							</span>
 							<span className="inline-block opacity-65 ml-2 relative top-2 text-sm">
 								{msg.date
 									? msg.date
