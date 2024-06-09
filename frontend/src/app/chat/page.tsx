@@ -112,7 +112,7 @@ export default function ChatPage() {
 		}
 	};
 
-	// This useEffect handles the user's name
+	// This useEffect handles the user's name.
 	useEffect(() => {
 		const nameGet = localStorage.getItem("name");
 
