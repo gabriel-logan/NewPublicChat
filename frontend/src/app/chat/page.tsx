@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useCallback, useRef, Fragment } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { FaCircle } from "react-icons/fa";
 import { IoSendSharp } from "react-icons/io5";
 import io, { Socket } from "socket.io-client";
@@ -31,22 +31,8 @@ export default function ChatPage() {
 
 	const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-	const sendMessage = (
-		event:
-			| React.KeyboardEvent<HTMLTextAreaElement>
-			| React.MouseEvent<HTMLButtonElement, MouseEvent>,
-	) => {
-		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-		if (event instanceof KeyboardEvent) {
-			if (event.key === "Enter" && !event.shiftKey && !isMobile) {
-				event.preventDefault();
-			} else {
-				return;
-			}
-		} else {
-			event.preventDefault();
-		}
+	const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 
 		if (!message.trim()) {
 			alert("You can't send an empty message.");
@@ -104,12 +90,6 @@ export default function ChatPage() {
 		setMessage(event.target.value);
 		setCount(event.target.value.length);
 		emitTyping();
-	};
-
-	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if (event.key === "Enter" && !event.shiftKey) {
-			sendMessage(event);
-		}
 	};
 
 	// This useEffect handles the user's name
@@ -212,14 +192,7 @@ export default function ChatPage() {
 							} p-2 max-w-xs min-w-24 font-medium`}
 						>
 							{msg.name}:{" "}
-							<span style={{ wordWrap: "break-word" }}>
-								{msg.text.split("\n").map((line, index) => (
-									<Fragment key={index}>
-										{line}
-										<br />
-									</Fragment>
-								))}
-							</span>
+							<span style={{ wordWrap: "break-word" }}>{msg.text}</span>
 							<span className="inline-block opacity-65 ml-2 relative top-2 text-sm">
 								{msg.date
 									? msg.date
@@ -232,7 +205,11 @@ export default function ChatPage() {
 				})}
 				<div ref={messagesEndRef} />
 			</div>
-			<form className="flex flex-col p-2 bg-white">
+			<form
+				onSubmit={sendMessage}
+				action=""
+				className="flex flex-col p-2 bg-white"
+			>
 				<div className="flex justify-between mb-2">
 					<p className="text-black mr-4">
 						<span className={`${count > 999 ? "text-red-500" : "text-black"}`}>
@@ -250,15 +227,11 @@ export default function ChatPage() {
 						value={message}
 						maxLength={1000}
 						onChange={handleInputChange}
-						onKeyDown={handleKeyDown}
 						className="flex-grow p-2 border rounded-lg min-h-16 text-black max-h-28 overflow-auto resize-none"
 						placeholder="Type a message..."
 					/>
 
-					<button
-						onClick={sendMessage}
-						className="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg active:bg-green-700 transition duration-150 ease-in-out"
-					>
+					<button className="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg active:bg-green-700 transition duration-150 ease-in-out">
 						<IoSendSharp color="white" size={32} />
 					</button>
 				</div>
