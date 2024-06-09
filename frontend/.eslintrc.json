@@ -1,0 +1,6 @@
+{
+  "extends": ["universe/web", "next/core-web-vitals"],
+	"rules": {
+		"no-console": "warn"
+	}
+}
