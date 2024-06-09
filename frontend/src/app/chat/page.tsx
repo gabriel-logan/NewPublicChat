@@ -31,9 +31,13 @@ export default function ChatPage() {
 
 	const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-	const sendMessage = (event: React.FormEvent<HTMLFormElement> | KeyboardEvent) => {
+	const sendMessage = (
+		event:
+			| React.KeyboardEvent<HTMLTextAreaElement>
+			| React.MouseEvent<HTMLButtonElement, MouseEvent>,
+	) => {
 		if (event instanceof KeyboardEvent) {
-			if (event.key === 'Enter' && !event.shiftKey) {
+			if (event.key === "Enter" && !event.shiftKey) {
 				event.preventDefault();
 			} else {
 				return;
@@ -101,7 +105,7 @@ export default function ChatPage() {
 	};
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if (event.key === 'Enter' && !event.shiftKey) {
+		if (event.key === "Enter" && !event.shiftKey) {
 			sendMessage(event);
 		}
 	};
@@ -219,11 +223,7 @@ export default function ChatPage() {
 				})}
 				<div ref={messagesEndRef} />
 			</div>
-			<form
-				onSubmit={sendMessage}
-				action=""
-				className="flex flex-col p-2 bg-white"
-			>
+			<form className="flex flex-col p-2 bg-white">
 				<div className="flex justify-between mb-2">
 					<p className="text-black mr-4">
 						<span className={`${count > 999 ? "text-red-500" : "text-black"}`}>
@@ -246,7 +246,10 @@ export default function ChatPage() {
 						placeholder="Type a message..."
 					/>
 
-					<button className="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg active:bg-green-700 transition duration-150 ease-in-out">
+					<button
+						onClick={sendMessage}
+						className="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg active:bg-green-700 transition duration-150 ease-in-out"
+					>
 						<IoSendSharp color="white" size={32} />
 					</button>
 				</div>
