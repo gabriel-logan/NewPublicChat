@@ -19,7 +19,7 @@ import { Message } from "./entities/message.entity";
 
 @WebSocketGateway({
 	cors: {
-		origin: "https://chat-client-lilac.vercel.app/", // Allow all origins
+		origin: "https://chat-client-rwag.onrender.com", // Allow all origins
 	},
 })
 export class ChatGateway
