@@ -36,10 +36,8 @@ export default function ChatPage() {
 			| React.KeyboardEvent<HTMLTextAreaElement>
 			| React.MouseEvent<HTMLButtonElement, MouseEvent>,
 	) => {
-		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
 		if (event instanceof KeyboardEvent) {
-			if (event.key === "Enter" && !event.shiftKey && !isMobile) {
+			if (event.key === "Enter" && !event.shiftKey) {
 				event.preventDefault();
 			} else {
 				return;
@@ -72,6 +70,7 @@ export default function ChatPage() {
 				},
 				(response: Message) => {
 					setMessage("");
+					setCount(0);
 				},
 			);
 		}
@@ -107,6 +106,10 @@ export default function ChatPage() {
 	};
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+		if (isMobile) {
+			return;
+		}
 		if (event.key === "Enter" && !event.shiftKey) {
 			sendMessage(event);
 		}
