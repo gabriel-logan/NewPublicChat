@@ -31,8 +31,16 @@ export default function ChatPage() {
 
 	const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-	const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+	const sendMessage = (event: React.FormEvent<HTMLFormElement> | KeyboardEvent) => {
+		if (event instanceof KeyboardEvent) {
+			if (event.key === 'Enter' && !event.shiftKey) {
+				event.preventDefault();
+			} else {
+				return;
+			}
+		} else {
+			event.preventDefault();
+		}
 
 		if (!message.trim()) {
 			alert("You can't send an empty message.");
@@ -90,6 +98,12 @@ export default function ChatPage() {
 		setMessage(event.target.value);
 		setCount(event.target.value.length);
 		emitTyping();
+	};
+
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if (event.key === 'Enter' && !event.shiftKey) {
+			sendMessage(event);
+		}
 	};
 
 	// This useEffect handles the user's name
@@ -227,6 +241,7 @@ export default function ChatPage() {
 						value={message}
 						maxLength={1000}
 						onChange={handleInputChange}
+						onKeyDown={handleKeyDown}
 						className="flex-grow p-2 border rounded-lg min-h-16 text-black max-h-28 overflow-auto resize-none"
 						placeholder="Type a message..."
 					/>
