@@ -213,7 +213,7 @@ export default function ChatPage() {
 								msg.name === (localStorage.getItem("name") as string)
 									? "self-end bg-green-500 text-white rounded-l-lg rounded-tr-lg"
 									: "self-start bg-white text-black rounded-r-lg rounded-tl-lg"
-							} p-2 max-w-xs min-w-24 font-medium`}
+							} p-2 max-w-lg min-w-36 font-medium`}
 						>
 							{msg.name}:{" "}
 							<span style={{ wordWrap: "break-word" }}>
