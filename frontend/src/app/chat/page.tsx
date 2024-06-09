@@ -112,23 +112,8 @@ export default function ChatPage() {
 		}
 	};
 
-	// This useEffect handles the user's name.
-	useEffect(() => {
-		const nameGet = localStorage.getItem("name");
-
-		if (!nameGet || nameGet === "Bot") {
-			if (nameGet === "Bot") {
-				localStorage.removeItem("name");
-				alert("You can't use the name 'Bot'");
-			}
-			router.push("/");
-		} else {
-			setName(nameGet);
-			join(nameGet);
-		}
-	}, [join, router]);
-
 	// This useEffect handles the socket connection
+	// IMPORTANT: THIS USEEFFECT MUST BE THE FIRST ONE
 	useEffect(() => {
 		socketRef.current = io(
 			process.env.NEXT_PUBLIC_DNS_SERVER_CONNECTION_URL
@@ -147,10 +132,21 @@ export default function ChatPage() {
 		};
 	}, []);
 
-	// This useEffect handles the scroll to the bottom of the chat
+	// This useEffect handles the user's name.
 	useEffect(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+		const nameGet = localStorage.getItem("name");
+
+		if (!nameGet || nameGet === "Bot") {
+			if (nameGet === "Bot") {
+				localStorage.removeItem("name");
+				alert("You can't use the name 'Bot'");
+			}
+			router.push("/");
+		} else {
+			setName(nameGet);
+			join(nameGet);
+		}
+	}, [join, router]);
 
 	// This useEffect handles the messages and typing events
 	useEffect(() => {
@@ -189,6 +185,11 @@ export default function ChatPage() {
 			}
 		};
 	}, [name]);
+
+	// This useEffect handles the scroll to the bottom of the chat
+	useEffect(() => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
 
 	return (
 		<div className="flex flex-col h-screen bg-gray-100">
