@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
 import { IoSendSharp } from "react-icons/io5";
 import io, { Socket } from "socket.io-client";
@@ -70,6 +71,7 @@ export default function ChatPage() {
 				},
 				(response: Message) => {
 					setMessage("");
+					setCount(0);
 				},
 			);
 		}
@@ -105,28 +107,17 @@ export default function ChatPage() {
 	};
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+		if (isMobile) {
+			return;
+		}
 		if (event.key === "Enter" && !event.shiftKey) {
 			sendMessage(event);
 		}
 	};
 
-	// This useEffect handles the user's name
-	useEffect(() => {
-		const nameGet = localStorage.getItem("name");
-
-		if (!nameGet || nameGet === "Bot") {
-			if (nameGet === "Bot") {
-				localStorage.removeItem("name");
-				alert("You can't use the name 'Bot'");
-			}
-			router.push("/");
-		} else {
-			setName(nameGet);
-			join(nameGet);
-		}
-	}, [join, router]);
-
 	// This useEffect handles the socket connection
+	// IMPORTANT: THIS USEEFFECT MUST BE THE FIRST ONE
 	useEffect(() => {
 		socketRef.current = io(
 			process.env.NEXT_PUBLIC_DNS_SERVER_CONNECTION_URL
@@ -145,10 +136,21 @@ export default function ChatPage() {
 		};
 	}, []);
 
-	// This useEffect handles the scroll to the bottom of the chat
+	// This useEffect handles the user's name.
 	useEffect(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+		const nameGet = localStorage.getItem("name");
+
+		if (!nameGet || nameGet === "Bot") {
+			if (nameGet === "Bot") {
+				localStorage.removeItem("name");
+				alert("You can't use the name 'Bot'");
+			}
+			router.push("/");
+		} else {
+			setName(nameGet);
+			join(nameGet);
+		}
+	}, [join, router]);
 
 	// This useEffect handles the messages and typing events
 	useEffect(() => {
@@ -188,6 +190,11 @@ export default function ChatPage() {
 		};
 	}, [name]);
 
+	// This useEffect handles the scroll to the bottom of the chat
+	useEffect(() => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
+
 	return (
 		<div className="flex flex-col h-screen bg-gray-100">
 			<div className="flex items-center flex-col sm:flex-row justify-evenly py-2 bg-blue-500 text-white">
@@ -197,6 +204,13 @@ export default function ChatPage() {
 				</div>
 				<h1 className="text-lg font-bold text-white mt-2 sm:mt-0">Chat</h1>
 				<p className="text-white p-2">Chat will be cleaned every 15 minutes.</p>
+				<Link
+					href="https://github.com/gabriel-logan/NewPublicChat"
+					target="_blank"
+					className="text-gray-200 hover:text-gray-50 hover:underline"
+				>
+					Github
+				</Link>
 			</div>
 			<div className="flex-1 flex flex-col overflow-y-auto p-2 space-y-2">
 				{messages.map((msg, index) => {
@@ -207,10 +221,17 @@ export default function ChatPage() {
 								msg.name === (localStorage.getItem("name") as string)
 									? "self-end bg-green-500 text-white rounded-l-lg rounded-tr-lg"
 									: "self-start bg-white text-black rounded-r-lg rounded-tl-lg"
-							} p-2 max-w-xs min-w-24 font-medium`}
+							} p-2 max-w-90% sm:max-w-80% md:max-w-lg min-w-36 font-medium`}
 						>
 							{msg.name}:{" "}
-							<span style={{ wordWrap: "break-word" }}>{msg.text}</span>
+							<span style={{ wordWrap: "break-word" }}>
+								{msg.text.split("\n").map((line, index) => (
+									<Fragment key={index}>
+										{line}
+										<br />
+									</Fragment>
+								))}
+							</span>
 							<span className="inline-block opacity-65 ml-2 relative top-2 text-sm">
 								{msg.date
 									? msg.date

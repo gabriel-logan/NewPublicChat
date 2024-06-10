@@ -1,4 +1,4 @@
-# Public Chat - Client
+# Public Chat
 
 ## Getting Started
 

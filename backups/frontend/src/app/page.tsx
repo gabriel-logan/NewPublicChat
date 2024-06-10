@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -56,6 +57,16 @@ export default function Home() {
 					Join Chat
 				</button>
 			</form>
+			<div className="flex flex-col justify-center items-center mt-6">
+				<h2 className="text-black">Contribute to this project on</h2>
+				<Link
+					href="https://github.com/gabriel-logan/NewPublicChat"
+					target="_blank"
+					className="text-blue-500 hover:text-blue-700 hover:underline"
+				>
+					Github Repository
+				</Link>
+			</div>
 		</main>
 	);
 }
