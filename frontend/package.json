@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-		"pre-commit": "yarn lint && yarn build && git add ."
+		"pre-commit": "yarn lint && yarn build && git add .",
+		"pr-check": "yarn lint && yarn build"
   },
   "dependencies": {
     "next": "14.2.3",
