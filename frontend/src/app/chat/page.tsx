@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef, Fragment } from "react";
 import { FaCircle } from "react-icons/fa";
@@ -203,6 +204,13 @@ export default function ChatPage() {
 				</div>
 				<h1 className="text-lg font-bold text-white mt-2 sm:mt-0">Chat</h1>
 				<p className="text-white p-2">Chat will be cleaned every 15 minutes.</p>
+				<Link
+					href="https://github.com/gabriel-logan/NewPublicChat"
+					target="_blank"
+					className="text-gray-200 hover:text-gray-50 hover:underline"
+				>
+					Github
+				</Link>
 			</div>
 			<div className="flex-1 flex flex-col overflow-y-auto p-2 space-y-2">
 				{messages.map((msg, index) => {
