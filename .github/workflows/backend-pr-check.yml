@@ -24,7 +24,7 @@ jobs:
         registry-url: https://registry.npmjs.org/
 
     - name: Cd to the directory to test
-      working-directory: ./backend/typescript
+      working-directory: ./backend
       run: |
           npm install
           npm run pr-check
