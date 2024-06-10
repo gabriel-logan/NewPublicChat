@@ -1,5 +1,9 @@
 # Public Chat
 
+## Important!
+
+To add a new commit run `yarn pre-commit` to test if the project builds correctly, it will run some tests and linting and execute git add .
+
 ## Getting Started
 
 ### Install dependencies
