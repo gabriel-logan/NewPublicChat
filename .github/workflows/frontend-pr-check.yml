@@ -26,5 +26,5 @@ jobs:
     - name: Cd to the directory to test
       working-directory: ./frontend
       run: |
-          npm install
-          npm run pr-check
+          yarn install
+          yarn pr-check
