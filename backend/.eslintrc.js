@@ -16,14 +16,14 @@ module.exports = {
 		node: true,
 		jest: true,
 	},
-	ignorePatterns: ['.eslintrc.js'],
+	ignorePatterns: ['.eslintrc.js', 'dist/'],
 	rules: {
 		'@typescript-eslint/interface-name-prefix': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'error',
 		"@typescript-eslint/explicit-function-return-type": "error",
 		"@typescript-eslint/prefer-readonly": "error",
 		'no-else-return': ['error', { allowElseIf: false }],
-		'no-console': 'warn',
+		'no-console': 'error',
 		'@typescript-eslint/typedef': [
 			'error',
 			{
