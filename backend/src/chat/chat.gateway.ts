@@ -19,7 +19,10 @@ import { Message } from "./entities/message.entity";
 
 @WebSocketGateway({
 	cors: {
-		origin: "https://chat-client-4yn8.onrender.com", // Allow all origins
+		origin: [
+			"https://chat-client-4yn8.onrender.com",
+			"http://192.168.100.3:3000",
+		],
 	},
 })
 export class ChatGateway
