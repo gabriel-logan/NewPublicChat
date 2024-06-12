@@ -168,7 +168,7 @@ export default function Form({ socketRef, name, setMessages }: FormProps) {
 					disabled={
 						message.length > 1000 || !message.trim() || !socketRef.current
 					}
-					className="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg active:bg-green-700 transition duration-150 ease-in-out"
+					className="ml-2 px-4 py-2 cursor-pointer bg-green-500 text-white rounded-lg active:bg-green-700 transition duration-150 ease-in-out"
 				>
 					<IoSendSharp color="white" size={32} />
 				</button>
