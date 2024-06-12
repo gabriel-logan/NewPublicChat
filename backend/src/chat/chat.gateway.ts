@@ -38,11 +38,15 @@ export class ChatGateway
 	public handleConnection(@ConnectedSocket() client: Socket): void {
 		this.connectedClients.set(client.id, 1);
 
+		this.server.emit("userConnected", true);
+
 		this.server.emit("clientsTotal", this.connectedClients.size);
 	}
 
 	public handleDisconnect(@ConnectedSocket() client: Socket): void {
 		this.connectedClients.delete(client.id);
+
+		this.server.emit("userConnected", false);
 
 		this.server.emit("clientsTotal", this.connectedClients.size);
 	}
