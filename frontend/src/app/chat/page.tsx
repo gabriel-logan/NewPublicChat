@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { FaCircle } from "react-icons/fa";
 import { HashLoader } from "react-spinners";
+import { toast } from "react-toastify";
 import io, { Socket } from "socket.io-client";
 
 import { Message } from "@/types/chat";
@@ -43,6 +44,14 @@ export default function ChatPage() {
 
 		socketRef.current.on("clientsTotal", (total: number) => {
 			setClientsTotal(total);
+		});
+
+		socketRef.current.on("userConnected", (response: boolean) => {
+			if (response === false) {
+				toast("User disconnected");
+			} else {
+				toast.info("New user connected");
+			}
 		});
 
 		return () => {

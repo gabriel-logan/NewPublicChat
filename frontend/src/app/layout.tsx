@@ -22,7 +22,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<ToastContainer autoClose={1500} />
+				<ToastContainer autoClose={800} />
 				{children}
 			</body>
 		</html>
