@@ -4,10 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { FaCircle } from "react-icons/fa";
+import { RiMenuAddLine } from "react-icons/ri";
 import { HashLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import io, { Socket } from "socket.io-client";
 
+import DrawerComponent from "@/components/DrawerComponent";
 import { Message } from "@/types/chat";
 
 import Form from "./Form";
@@ -23,6 +25,11 @@ export default function ChatPage() {
 	const router = useRouter();
 
 	const socketRef = useRef<Socket | null>(null);
+
+	const [isOpen, setIsOpen] = useState(false);
+	const toggleDrawer = () => {
+		setIsOpen((prevState) => !prevState);
+	};
 
 	const join = useCallback((value: string) => {
 		(() => {
@@ -79,6 +86,11 @@ export default function ChatPage() {
 
 	return (
 		<div className="flex flex-col h-screen bg-gray-100">
+			<DrawerComponent
+				isOpen={isOpen}
+				toggleDrawer={toggleDrawer}
+				socketRef={socketRef}
+			/>
 			<div className="flex items-center flex-col sm:flex-row justify-evenly py-2 bg-blue-500 text-white">
 				<div className="flex items-center justify-center gap-1">
 					<FaCircle color={clientsTotal > 0 ? "green" : "gray"} size={22} />
@@ -93,6 +105,9 @@ export default function ChatPage() {
 				>
 					Github
 				</Link>
+				<button type="button" onClick={toggleDrawer}>
+					<RiMenuAddLine size={24} />
+				</button>
 			</div>
 
 			{socketRef.current ? (

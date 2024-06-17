@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-modern-drawer/dist/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
